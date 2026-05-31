@@ -1,0 +1,1030 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ôn Tập Quản Trị Hệ Thống</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f7f6; color: #333; line-height: 1.6; padding: 20px; max-width: 900px; margin: 0 auto; }
+        h1 { text-align: center; color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 10px; }
+        .chapter-title { color: #e74c3c; margin-top: 40px; font-size: 1.8em; font-weight: bold; border-bottom: 1px dashed #e74c3c; padding-bottom: 5px; }
+        .question-card { background: #fff; border-radius: 8px; padding: 20px; margin-top: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .question-title { font-weight: bold; font-size: 1.1em; margin-bottom: 15px; color: #2980b9; }
+        .options { list-style-type: none; padding: 0; }
+        .options li { margin-bottom: 10px; }
+        .options label { display: flex; align-items: flex-start; cursor: pointer; padding: 10px; border: 1px solid #ddd; border-radius: 5px; transition: background 0.3s; }
+        .options label:hover { background: #f0f8ff; }
+        input[type="radio"] { margin-right: 10px; margin-top: 5px; }
+        .btn-submit { display: block; width: 100%; padding: 15px; background: #3498db; color: #fff; border: none; border-radius: 5px; font-size: 1.2em; cursor: pointer; margin-top: 30px; transition: background 0.3s; }
+        .btn-submit:hover { background: #2980b9; }
+        #result { margin-top: 20px; font-size: 1.5em; font-weight: bold; text-align: center; color: #27ae60; }
+    </style>
+</head>
+<body>
+
+    <h1>Hệ Thống Trắc Nghiệm Ôn Tập</h1>
+    <div id="quiz-container"></div>
+    <button class="btn-submit" onclick="submitQuiz()">Nộp bài & Xem điểm</button>
+    <div id="result"></div>
+
+    <script>
+        const quizData = [
+            // CHƯƠNG 1
+            {
+                chapter: "CHƯƠNG 1.",
+                question: "Câu 1: Những nhiệm vụ nào mà chuyên viên quản trị hệ thống phải thực hiện trong quá trình quản trị hệ thống?",
+                options: [
+                    "a. Trực tiếp đứng ra khắc phục mọi sự cố liên quan đến mạng và máy tính để đảm bảo công việc của mọi người không bị gián đoạn.",
+                    "b. Đảm bảo thời gian hoạt động, hiệu suất, tài nguyên và bảo mật của hệ thống mạng máy tính.",
+                    "c. Hoàn thành khối công việc không hề nhỏ và được hưởng thù lao xứng đáng với công việc của mình.",
+                    "d. Các phương án đã trả lời đều đúng."
+                ],
+                correctAnswer: 3 
+            },
+            {
+                question: "Câu 2: Một chuyên viên quản trị hệ thống cần trang bị kỹ năng chuyên môn gì?",
+                options: [
+                    "a. Thành thạo công nghệ ảo hóa (Virtualization Technology).",
+                    "b. Thành thạo hệ điều hành Windows hoặc Linux.",
+                    "c. Kỹ năng lập trình và phát triển phần mềm.",
+                    "d. Các phương án đã trả lời đều đúng."
+                ],
+                correctAnswer: 3
+            },
+            {
+                question: "Câu 3: Thu nhập của một chuyên viên quản trị hệ thống chuyên nghiệp ở mức nào?",
+                options: [
+                    "a. Khá cao so với mặt bằng thu nhập trung bình chung của xã hội.",
+                    "b. Mức thu nhập trung bình.",
+                    "c. Mức thu nhập thấp.",
+                    "d. Các phương án đã trả lời đều sai."
+                ],
+                correctAnswer: 0
+            },
+            {
+                question: "Câu 4: Một chuyên viên quản trị hệ thống cần trang bị kỹ năng chuyên môn gì?",
+                options: [
+                    "a. Kỹ năng bảo mật thông tin.",
+                    "b. Am hiểu mô hình điện toán đám mây.",
+                    "c. Kỹ năng công nghệ nói chung.",
+                    "d. Các phương án đã trả lời đều đúng."
+                ],
+                correctAnswer: 3
+            },
+            {
+                question: "Câu 5: Một chuyên viên quản trị hệ thống cần trang bị những kỹ năng mềm gì?",
+                options: [
+                    "a. Khả năng chịu áp lực công việc và dự đoán rủi ro tiềm ẩn.",
+                    "b. Kỹ năng tự học.",
+                    "c. Kỹ năng giao tiếp và tạo dựng mối quan hệ.",
+                    "d. Các phương án đã trả lời đều đúng."
+                ],
+                correctAnswer: 3
+            },
+            {
+                question: "Câu 6: Theo bạn thì một sinh viên chuyên nghành CNTT cần trang bị kiến thức chuyên môn về quản trị hệ thống không?",
+                options: [
+                    "a. Cần trang bị kiến thức trong quá trình học.",
+                    "b. Không cần trang bị kiến thức trong quá trình học.",
+                    "c. Tùy vào phân nhóm chuyên ngành.",
+                    "d. Các phương án đã trả lời đều đúng."
+                ],
+                correctAnswer: 2
+            },
+            // CHƯƠNG 2
+            {
+                chapter: "CHƯƠNG 2",
+                question: "Câu 1: Máy tính trạm (workstation) là gì?",
+                options: [
+                    "a. Là máy tính có linh kiện và công nghệ được nâng cấp hiện đại và tối ưu nhất.",
+                    "b. Là máy tính có khả năng xử lý văn bản và các phép toán thông thường.",
+                    "c. Máy tính có khả năng nối kết mạng.",
+                    "d. Các phương án đã trả lời đều đúng."
+                ],
+                correctAnswer: 0
+            },
+            {
+                question: "Câu 2. Khi sử dụng mạng máy tính ta sẽ được các lợi ích:",
+                options: [
+                    "a. Chia sẻ tài nguyên ( cứng, cơ sở dữ liệu, máy in, các phần mềm tiện",
+                    "b. Quản lý tập trung.",
+                    "c. Tận dụng năng lực xử lý của các máy tính rỗi kết hợp lại để thực hiện các công việc lớn.",
+                    "d. Tất cả đều đúng."
+                ],
+                correctAnswer: 3
+            },
+            {
+                question: "Câu 3: Máy tính trạm (workstation) có tính năng gì?",
+                options: [
+                    "a. Có cấu hình mạnh và giúp hoạt động nhanh hơn.",
+                    "b. Được thiết kế chuyên biệt để chạy các ứng dụng khoa học và kỹ thuật.",
+                    "c. Được tối ưu hóa nhằm xử lý các dữ liệu phức tạp khác nhau.",
+                    "d. Các phương án đã trả lời đều đúng."
+                ],
+                correctAnswer: 3
+            },
+            {
+                question: "Câu 4. Điểm đặc biệt của máy trạm là gì?",
+                options: [
+                    "a. Thiết kế, cấu hình chuyên dành cho các ứng dụng kỹ thuật.",
+                    "b. Có khả năng xử lý văn bản.",
+                    "c. Có khả năng kết nối mạng.",
+                    "d. Các phương án đã trả lời đều sai."
+                ],
+                correctAnswer: 0
+            },
+            {
+                question: "Câu 5. Điểm đặc biệt của máy trạm là gì?",
+                options: [
+                    "a. Máy trạm sử dụng CPU hiệu năng xử lý cực mạnh với tần suất lớn.",
+                    "b. Máy trạm sử dụng chuột không dây.",
+                    "c. Máy trạm sử dụng bàn phím không dây.",
+                    "d. Máy trạm sử dụng nguồn có công suất bình thường."
+                ],
+                correctAnswer: 0
+            },
+            {
+                question: "Câu 6. Ưu điểm của máy trạm là gì?",
+                options: [
+                    "a. Giảm thiểu tối đa lỗi hệ thống.",
+                    "b. Giúp hệ thống hoạt động ổn định.",
+                    "c. Thích hợp với các kỹ thuật viên.",
+                    "d. Các phương án đã trả lời đều đúng."
+                ],
+                correctAnswer: 3
+            },
+            {
+                question: "Câu 7. Nhược điểm của máy trạm là gì?",
+                options: [
+                    "a. Tốc độ xử lý của CPU chậm.",
+                    "b. Xử lý đồ họa yếu.",
+                    "c. Chi phí cao.",
+                    "d. Các phương án đã trả lời đều sai."
+                ],
+                correctAnswer: 2
+            },
+            {
+                question: "Câu 8. Nhược điểm của máy trạm là gì?",
+                options: [
+                    "a. Tốc độ xử lý của CPU chậm.",
+                    "b. Có thể được lắp ráp ở nhiều nơi.",
+                    "c. Dung lượng bộ nhớ RAM thấp (ít).",
+                    "d. Các phương án đã trả lời đều sai."
+                ],
+                correctAnswer: 1
+            },
+            {
+                question: "Câu 9. Tiêu chí nào được ưu tiên khi chọn mua máy trạm để thiết lập hệ thống?",
+                options: [
+                    "a. Ngân sách.",
+                    "b. Thương hiệu của máy.",
+                    "c. Tốc độ xử lý của máy.",
+                    "d. Thời gian bảo hành máy."
+                ],
+                correctAnswer: 0
+            },
+            {
+                question: "Câu 10. Máy tính như thế nào thì được gọi là máy chủ?",
+                options: [
+                    "a. Máy tính có khả năng đồ họa.",
+                    "b. Là một máy tính được kết nối với mạng máy tính hoặc Internet, có IP tĩnh, có năng lực xử lý cao.",
+                    "c. Máy tính có chức năng xử lý văn bản.",
+                    "d. Là máy tính có thời gian sử dụng lâu."
+                ],
+                correctAnswer: 1
+            },
+            {
+                question: "Câu 11. Máy chủ có các đặc điểm gì cơ bản?",
+                options: [
+                    "a. Có năng lực lưu trữ và xử lý dữ liệu lớn hơn máy tính thông thường.",
+                    "b. Có khả năng cung cấp dịch dụ Website.",
+                    "c. Có chức năng cấp quyền cho máy trạm và chia sẽ tài nguyên trên máy chủ cho máy trạm.",
+                    "d. Các phương án đã trả lời đều đúng."
+                ],
+                correctAnswer: 3
+            },
+            {
+                question: "Câu 12. Theo phương pháp xây dựng một hệ thống máy chủ, máy chủ được chia làm mấy loại cơ bản?",
+                options: [
+                    "a. Ba loại.",
+                    "b. Hai loại.",
+                    "c. Một loại.",
+                    "d. Các phương án đã trả lời đều sai."
+                ],
+                correctAnswer: 0
+            },
+            {
+                question: "Câu 13. Các loại máy chủ cơ bản thường được xây dựng là loại nào?",
+                options: [
+                    "a. Máy chủ vật lý riêng (Dedicated Server):.",
+                    "b. Máy chủ ảo (VPS: Virtual Private Server):.",
+                    "c. Máy chủ đám mây (Cloud Server):.",
+                    "d. Các phương án đã trả lời đều đúng."
+                ],
+                correctAnswer: 3
+            },
+            {
+                question: "Câu 14. Theo chức năng, máy chủ được chia thành những loại nào sau đây?",
+                options: [
+                    "a. Database servers (máy chủ cơ sở dữ liệu)",
+                    "b. File servers (máy chủ file, là máy chủ lưu trữ file ví dụ như Dropbox, Google Drive, Microsoft One Drive).",
+                    "c. Mail servers (máy chủ mail ví dụ như Gmail, Yahoo mail, Yandex, Amazon mail service).",
+                    "d. Các phương án đã trả lời đều đúng."
+                ],
+                correctAnswer: 3
+            },
+            {
+                question: "Câu 15. Loại Server nào dưới đây là Server dạng tháp?",
+                options: [
+                    "a. Tower Server",
+                    "b. Rack mount Server.",
+                    "c. Blade Server.",
+                    "d. Các phương án đã trả lời đều sai."
+                ],
+                correctAnswer: 0
+            },
+            {
+                question: "Câu 16. Chọn tiêu chí nào dưới đây để lựa chọn CPU cho máy chủ?",
+                options: [
+                    "a. CPU chỉ thực hiện xử lý đơn luông.",
+                    "b. CPU càng nhiều nhân càng tốt.",
+                    "c. CPU xử lý đa luồng, nhiều nhân, bộ nhớ Cache lớn, tốc độ cao.",
+                    "d. Có giá thành thấp."
+                ],
+                correctAnswer: 2
+            },
+            {
+                question: "Câu 17. Lựa chọn loại RAM nào cho máy chủ?",
+                options: [
+                    "a. SDRAM.",
+                    "b. GDDR SDRAM.",
+                    "c. DRAM.",
+                    "d. ECC RAM."
+                ],
+                correctAnswer: 3
+            },
+            {
+                question: "Câu 18. Ổ cứng HDD dùng cho máy chủ thường sử dụng giao tiếp gì?",
+                options: [
+                    "a. SCSI, SAS.",
+                    "b. IDE.",
+                    "c. SATA.",
+                    "d. Các phương án đã trả lời đều đúng."
+                ],
+                correctAnswer: 0
+            },
+            {
+                question: "Câu 19. Ổ cứng SSD dùng cho máy chủ thường sử dụng giao tiếp gì?",
+                options: [
+                    "a. SCSI, SAS.",
+                    "b. IDE.",
+                    "c. SATA.",
+                    "d. Các phương án đã trả lời đều đúng."
+                ],
+                correctAnswer: 2
+            },
+            {
+                question: "Câu 20. Hệ thống nào dưới đây không được gọi là hệ thống thông tin?",
+                options: [
+                    "a. Hệ thống bán hàng trong siêu thị.",
+                    "b. Hệ thống bán hàng ở chợ truyền thống.",
+                    "c. Hệ thống khám và chữa bệnh ở bệnh viện hiện nay.",
+                    "d. Các phương án đã trả lời đều đúng."
+                ],
+                correctAnswer: 1
+            },
+            {
+                question: "Câu 21. Hệ thống nào dưới đây được gọi là hệ thống thông tin?",
+                options: [
+                    "a. Hệ thống bán hàng trong siêu thị.",
+                    "b. Hệ thống bán hàng online.",
+                    "c. Hệ thống khám và chữa bệnh ở bệnh viện hiện nay.",
+                    "d. Các phương án đã trả lời đều đúng."
+                ],
+                correctAnswer: 3
+            },
+            {
+                question: "Câu 22. Hệ thống nào dưới đây được gọi là hệ thống thông tin?",
+                options: [
+                    "a. Hệ thống theo dõi, giám sát.",
+                    "b. Hệ thống chia sẽ dữ liệu, thông tin, làm việc nhóm.",
+                    "c. Hệ thống hỗ trợ vận hành, hỗ trợ người dùng.",
+                    "d. Các phương án đã trả lời đều đúng."
+                ],
+                correctAnswer: 3
+            },
+            {
+                question: "Câu 23. Trên máy chủ bắt buộc phải được cài đặt phần mềm cơ bản nào dưới đây?",
+                options: [
+                    "a. HĐH Windows.",
+                    "b. HĐH Linux.",
+                    "c. HĐH quản trị mạng.",
+                    "d. Các phương án đã trả lời đều đúng."
+                ],
+                correctAnswer: 2
+            },
+            {
+                question: "Câu 24. Hệ điều hành là gì?",
+                options: [
+                    "a. Là một phần mềm xử lý đồ họa.",
+                    "b. Là một phần mềm dùng để điều hành, quản lý toàn bộ tất cả thành phần (bao gồm cả phần cứng và phần mềm) của thiết bị điện tử.",
+                    "c. Là một phần mềm xử lý bảng tính điện tử.",
+                    "d. Các phương án đã trả lời đều sai."
+                ],
+                correctAnswer: 1
+            },
+            {
+                question: "Câu 25. Hệ điều hành có vai trò chính gì trong một hệ thống thông tin?",
+                options: [
+                    "a. Có vai trò trung gian trong việc giao tiếp giữa người sử dụng HTTT và thiết bị.",
+                    "b. Khởi động HTTT.",
+                    "c. Quản trị hệ thống.",
+                    "d. Các phương án đã trả lời đều đúng."
+                ],
+                correctAnswer: 3
+            },
+            {
+                question: "Câu 26. Các loại hệ điều hành phổ biến hiện nay là?",
+                options: [
+                    "a. Hệ điều hành macOS.",
+                    "b. Hệ điều hành Linux.",
+                    "c. Hệ điều hành Windows.",
+                    "d. Các phương án đã trả lời đều đúng."
+                ],
+                correctAnswer: 3
+            },
+            {
+                question: "Câu 27. HĐH nào dưới đây được gọi là HĐH mở?",
+                options: [
+                    "a. Hệ điều hành macOS",
+                    "b. Hệ điều hành Linux",
+                    "c. Hệ điều hành Windows.",
+                    "d. Các phương án đã trả lời đều đúng."
+                ],
+                correctAnswer: 1
+            },
+            {
+                question: "Câu 28. HĐH nào dưới đây được gọi là HĐH mở?",
+                options: [
+                    "a. Hệ điều hành macOS",
+                    "b. Hệ điều hành Android",
+                    "c. Hệ điều hành Windows.",
+                    "d. Các phương án đã trả lời đều đúng."
+                ],
+                correctAnswer: 1
+            },
+            {
+                question: "Câu 29. HĐH nào dưới đây được gọi là HĐH đóng?",
+                options: [
+                    "a. Hệ điều hành macOS",
+                    "b. Hệ điều hành Android",
+                    "c. Hệ điều hành Linux.",
+                    "d. Các phương án đã trả lời đều đúng."
+                ],
+                correctAnswer: 0
+            },
+            {
+                question: "Câu 30. HĐH nào dưới đây được gọi là HĐH đóng?",
+                options: [
+                    "a. Hệ điều hành Windows.",
+                    "b. Hệ điều hành Android",
+                    "c. Hệ điều hành Linux.",
+                    "d. Các phương án đã trả lời đều đúng."
+                ],
+                correctAnswer: 0
+            },
+            {
+                question: "Câu 31. Ưu điểm của HĐH đóng là gì?",
+                options: [
+                    "a. Phổ biến, dễ sử dụng, tính ổn định cao và có đầy đủ tính năng để phục vụ cho công việc cũng như giải trí.",
+                    "b. Không phải tính phí khi dùng.",
+                    "c. Có thể cập nhật mã nguồn.",
+                    "d. Các phương án đã trả lời đều sai."
+                ],
+                correctAnswer: 0
+            },
+            {
+                question: "Câu 32. Ưu điểm của HĐH mở là gì?",
+                options: [
+                    "a. Phổ biến, dễ sử dụng, tính ổn định cao và có đầy đủ tính năng để phục vụ cho công việc cũng như giải trí.",
+                    "b. Miễn phí, có thể thay đổi mã nguồn và phân phối nó.",
+                    "c. Không được cập nhật mã nguồn.",
+                    "d. Các phương án đã trả lời đều sai."
+                ],
+                correctAnswer: 1
+            },
+            {
+                question: "Câu 33. Ứng dụng (Application) là gì?",
+                options: [
+                    "a. Là một loại phần mềm cho phép người dùng thực hiện các tác vụ cụ thể.",
+                    "b. Là một HĐH máy tính.",
+                    "c. Là phần mềm quản lý, điều khiển thiết bị phần cứng.",
+                    "d. Các phương án đã trả lời đều sai."
+                ],
+                correctAnswer: 0
+            },
+            {
+                question: "Câu 34. Web Application có những ưu điểm nào dưới đây?",
+                options: [
+                    "a. Người dùng không cần phải cài đặt ứng dụng web trên cứng, vì vậy nó không gây ảnh hướng đến dung lượng.",
+                    "b. Nó yêu cầu ít hỗ trợ và bảo trì hơn từ nhà cung cấp và yêu cầu kỹ thuật thấp hơn từ máy tính của người dùng.",
+                    "c. Ứng dụng web giảm chi phí cho cả người dùng cuối và nhà cung cấp.",
+                    "d. Các phương án đã trả lời đều đúng."
+                ],
+                correctAnswer: 3
+            },
+            {
+                question: "Câu 35. Hệ điều hành Windows 10 là phiên bản tiếp theo của HĐH Windows nào?",
+                options: [
+                    "a. HĐH Windows 7.",
+                    "b. HĐH Windows 8.",
+                    "c. HĐH Windows 8.1.",
+                    "d. Các phương án đã trả lời đều sai."
+                ],
+                correctAnswer: 2
+            },
+            {
+                question: "Câu 36. Hệ điều hành Windows 10 có các phiên bản nào dưới đây?",
+                options: [
+                    "a. Phiên bản Home, Pro.",
+                    "b. Phiên bản Education.",
+                    "c. Phiên bản Enterprise.",
+                    "d. Các phương án đã trả lời đều đúng."
+                ],
+                correctAnswer: 3
+            },
+            {
+                question: "Câu 37. Chọn chức năng nào để tạo một phân vùng đĩa mới trong quá trình cài đặt Windows 10?",
+                options: [
+                    "a. Format.",
+                    "b. New.",
+                    "c. Delete.",
+                    "d. Load Driver."
+                ],
+                correctAnswer: 1
+            },
+            {
+                question: "Câu 38. Để kiểm tra phiên bản Windows 10 đang dùng, ta dùng lệnh nào?",
+                options: [
+                    "a. Start-> Power -> Restart.",
+                    "b. Start-> Setting -> Devices.",
+                    "c. Start-> Setting -> System -> About.",
+                    "d. Load Driver."
+                ],
+                correctAnswer: 2
+            },
+            {
+                question: "Câu 39. Để Tạo tài khoản người dùng nội bộ trên Windows 10, dùng lệnh gì?",
+                options: [
+                    "a. Chuột phải vào This PC -> Create shortcut.",
+                    "b. Chuột phải vào This PC->Manage->Computer Management->Local Users and Groups.",
+                    "c. Chuột phải vào This PC->Manage->Computer Management->Device Manager",
+                    "d. Chuột phải vào This PC -> Local Users and Groups."
+                ],
+                correctAnswer: 1
+            },
+            {
+                question: "Câu 40. Để thay đổi cấu hình tài khoản hệ thống trên Windows 10, dùng lệnh nào?",
+                options: [
+                    "a. Click đúp chuột vào This PC -> User acounts -> User acounts (change acount type).",
+                    "b. Click đúp chuột vào Control Panel -> User acounts -> User acounts (change acount type).",
+                    "c. Click đúp chuột vào This PC -> User acounts -> User acounts (change acount type).",
+                    "d. Các phương án đã trả lời đều sai."
+                ],
+                correctAnswer: 1
+            },
+            {
+                question: "Câu 41. Thao tác nào để chọn tài khoản mặc định cho hệ thống khi khởi động Windows 10?",
+                options: [
+                    "a. Lệnh Windows + R -> Nhập lệnh Netplwiz -> OK",
+                    "b. Lệnh Windows + R -> Nhập lệnh OSK -> OK",
+                    "c. Lệnh Windows + R -> Nhập lệnh CMD -> OK",
+                    "d. Các phương án đã trả lời đều sai."
+                ],
+                correctAnswer: 0
+            },
+            {
+                question: "Câu 42. HĐH Windows Server phiên bản nào hỗ trợ tốt công nghệ điện toán đám mây?",
+                options: [
+                    "a. HĐH Windows Server 2003",
+                    "b. HĐH Windows Server 2008",
+                    "c. HĐH Windows Server 2012 trở về sau.",
+                    "d. Các phương án đã trả lời đều sai."
+                ],
+                correctAnswer: 2
+            },
+            {
+                question: "Câu 43. Có thể tạo USB Boot bằng phần mềm nào?",
+                options: [
+                    "a. Phần mềm Rufus",
+                    "b. Phần mềm Windows USB/DVD Download Tool.",
+                    "c. Phần mềm UNetbootin.",
+                    "d. Các phương án đã trả lời đều đúng."
+                ],
+                correctAnswer: 3
+            },
+            {
+                question: "Câu 44. Sau khi tạo USB boot xong, bước tiếp theo làm gì để cài Windows Server 2012 R2?",
+                options: [
+                    "a. Giải nén file ISO Windows Server vào USB Boot bằng phần mềm tạo USB boot.",
+                    "b. Sao chép file ISO Windows Server vào USB Boot bằng phần mềm tạo USB boot.",
+                    "c. Đổi định dạng USB boot sang Fat NTFS.",
+                    "d. Các phương án đã trả lời đều đúng."
+                ],
+                correctAnswer: 0
+            },
+            {
+                question: "Câu 45. Bấm tổ hợp phím nào để có thể nhập User name và mật khẩu đăng nhập vào Windows Server 2012?",
+                options: [
+                    "a. Tổ hợp phím Ctrl+Alt+Delete.",
+                    "b. Tổ hợp phím Ctrl+Alt+Backspace.",
+                    "c. Tổ hợp phím Ctrl+Alt+D",
+                    "d. Các phương án đã trả lời đều sai."
+                ],
+                correctAnswer: 0
+            },
+            {
+                question: "Câu 46. Máy tính có thể xử lý dữ liệu dưới dạng nào?",
+                options: [
+                    "a. Hình ảnh.",
+                    "b. Âm thanh.",
+                    "c. Văn bản.",
+                    "d. Các phương án đã trả lời đều đúng."
+                ],
+                correctAnswer: 3
+            },
+            {
+                question: "Câu 47. Quản trị dữ liệu trong một hệ thống có vai trò gì?",
+                options: [
+                    "a. Cung cấp dữ liệu, hỗ trợ, đào tạo, phát triển và bảo trì hệ thống dữ liệu và ứng dụng trong công tác quản lý.",
+                    "b. Hỗ trợ lập kế hoạch, quản lý và phát triển hệ thống.",
+                    "c. Điều phối và phối hợp giữa các đơn vị trong hệ thống đạt hiệu quả cao.",
+                    "d. Các phương án đã trả lời đều đúng."
+                ],
+                correctAnswer: 3
+            },
+            {
+                question: "Câu 48. Máy tính không thể xử lý thông tin dưới dạng nào?",
+                options: [
+                    "a. Hình ảnh.",
+                    "b. Mùi.",
+                    "c. Văn bản.",
+                    "d. Sóng."
+                ],
+                correctAnswer: 1
+            },
+            {
+                question: "Câu 49. Nhiệm vụ chính của quản trị dữ liệu là gì?",
+                options: [
+                    "a. Liên tục xác định các cơ hội để cải tiến quy trình và chất lượng, đồng thời triển khai các công nghệ hiện hành và/hoặc thay đổi quy trình.",
+                    "b. Ghi lại tất cả các quy trình quản trị hệ thống và quy trình cài đặt.",
+                    "c. Cài đặt, định cấu hình, duy trì và khắc phục sự cố tất cả tài nguyên mạng bao gồm máy chủ, cơ sở hạ tầng mạng, cơ sở hạ tầng ảo, bộ lưu trữ, ứng dụng và các hệ thống con.",
+                    "d. Các phương án đã trả lời đều đúng."
+                ],
+                correctAnswer: 3
+            },
+            {
+                question: "Câu 50. Thiết bị nào dưới đây được gọi là thiết bị lưu trữ chính tạm thời?",
+                options: [
+                    "a. RAM.",
+                    "b. ROM",
+                    "c. HDD",
+                    "d. USB."
+                ],
+                correctAnswer: 0
+            },
+            {
+                question: "Câu 51. Thiết bị lưu trữ nào dưới đây sử dụng bộ nhớ bán dẫn?",
+                options: [
+                    "a. HDD.",
+                    "b. CD ROM",
+                    "c. SSD.",
+                    "d. Các phương án đã trả lời đều sai."
+                ],
+                correctAnswer: 2
+            },
+            {
+                question: "Câu 52. Phần mềm nào dưới đây có chức năng phân vùng cho các thiết bị lưu trữ thông tin vĩnh cửu dùng trên HĐH Windows?",
+                options: [
+                    "a. EasyUS Partition Master Free",
+                    "b. MiniTool Partition Wizard",
+                    "c. Macrorit Disk Partition Expert",
+                    "d. Các phương án đã trả lời đều đúng."
+                ],
+                correctAnswer: 3
+            },
+            {
+                question: "Câu 53. Các thành phần của File System là?",
+                options: [
+                    "a. Boot Sector, Directory.",
+                    "b. File Allocation Table (FAT) hoặc Master File Table (MFT).",
+                    "c. File System Drivers.",
+                    "d. Các phương án đã trả lời đều đúng."
+                ],
+                correctAnswer: 3
+            },
+            {
+                question: "Câu 54. Các loại File System nào có tính năng bảo mật tốt?",
+                options: [
+                    "a. Boot Sector, Directory.",
+                    "b. FAT (File Allocation Table).",
+                    "c. NTFS (New Technology File System)",
+                    "d. Các phương án đã trả lời đều đúng."
+                ],
+                correctAnswer: 2
+            },
+            {
+                question: "Câu 55. Tài khoản người dùng trên máy tính là gì?",
+                options: [
+                    "a. Là một tập hợp thông tin cho HĐH biết bạn có thể truy cập vào các tệp và thư mục nào.",
+                    "b. Là một tập hợp các thông tin của người sử dụng máy tính.",
+                    "c. Là tập hợp các thông tin của máy tính đang dùng.",
+                    "d. Các phương án đã trả lời đều đúng."
+                ],
+                correctAnswer: 0
+            },
+            {
+                question: "Câu 56. Nhóm người dùng có thể được phân thành các loại nào dưới đây?",
+                options: [
+                    "a. Các nhóm cục bộ.",
+                    "b. Các nhóm bảo mật.",
+                    "c. Các nhóm phân phối",
+                    "d. Các phương án đã trả lời đều đúng."
+                ],
+                correctAnswer: 3
+            },
+            {
+                question: "Câu 57. Một tiến trình là gì?",
+                options: [
+                    "a. Là một qui trình quản trị hệ thống..",
+                    "b. Là một chương trình đang chạy có liên kết với một bộ dữ liệu cụ thể để có thể theo dõi tiến trình đó.",
+                    "c. Là quá trình khởi động máy tính, nạp HĐH.",
+                    "d. Các phương án đã trả lời đều sai."
+                ],
+                correctAnswer: 1
+            },
+            {
+                question: "Câu 58. Dịch vụ (Service) trong một HTTT là gì?",
+                options: [
+                    "a. Là một đối tượng mà hệ thống quản lý.",
+                    "b. Là một phần mềm tiện ích.",
+                    "c. Dịch vụ là một cơ chế cho phép truy cập và khai thác đối với một hoặc nhiều chức năng của hệ thống.",
+                    "d. Các phương án đã trả lời đều sai."
+                ],
+                correctAnswer: 2
+            },
+            {
+                question: "Câu 59. Phát biểu nào dưới đây là đúng?",
+                options: [
+                    "a. Một tiến trình có thể có nhiều dịch vụ.",
+                    "b. Một dịch vụ có thể có nhiều tiến trình.",
+                    "c. Tiến trình và dịch vụ không có liên quan với nhau.",
+                    "d. Các phương án đã trả lời đều sai."
+                ],
+                correctAnswer: 1
+            },
+            {
+                question: "Câu 60. Thiết bị nào dưới đây được gọi là thiết bị mạng?",
+                options: [
+                    "a. Chuột (Mouse).",
+                    "b. Máy chiếu (Projector).",
+                    "c. Switch.",
+                    "d. Các phương án đã trả lời đều sai."
+                ],
+                correctAnswer: 2
+            },
+            {
+                question: "Câu 61. Định nghĩa một tiến trình là gì?",
+                options: [
+                    "a. Một tiến trình là một chương trình đang được thực thi.",
+                    "b. Là lập trình Logic",
+                    "c. Các phương án đã trả lời đều đúng.",
+                    "d. Là quá trình cải tiến liên tục."
+                ],
+                correctAnswer: 0
+            },
+            {
+                question: "Câu 62. Thiết bị mạng Repeater là gì?",
+                options: [
+                    "a. Là thiết bị chuyển mạch dùng để kết nối các thiết bị hay các mạng nhỏ lại với nhau.",
+                    "b. Thiết bị ổn định tốc độ đường truyền.",
+                    "c. Là bộ khuếch đại tín hiệu, có thể truyền tín hiệu đi xa hơn nhưng không bị yếu đi.",
+                    "d. Các phương án đã trả lời đều sai."
+                ],
+                correctAnswer: 2
+            },
+            {
+                question: "Câu 63. Thiết bị mạng Switch là gì?",
+                options: [
+                    "a. Là thiết bị chuyển mạch dùng để kết nối các thiết bị hay các mạng nhỏ lại với nhau.",
+                    "b. Thiết bị ổn định tốc độ đường truyền.",
+                    "c. Là bộ khuếch đại tín hiệu, có thể truyền tín hiệu đi xa hơn nhưng không bị yếu đi.",
+                    "d. Các phương án đã trả lời đều sai."
+                ],
+                correctAnswer: 0
+            },
+            {
+                question: "Câu 64. Thiết bị mạng Router là gì?",
+                options: [
+                    "a. Là thiết bị chuyển mạch dùng để kết nối các thiết bị hay các mạng nhỏ lại với nhau.",
+                    "b. Là thiết bị hoạt động ở lớp 3 của mô hình OSI, có nhiệm vụ kết nối hai hay nhiều mạng IP lại với nhau.",
+                    "c. Là bộ khuếch đại tín hiệu, có thể truyền tín hiệu đi xa hơn nhưng không bị yếu đi.",
+                    "d. Các phương án đã trả lời đều sai."
+                ],
+                correctAnswer: 1
+            },
+            {
+                question: "Câu 65. Thiết bị mạng Gateway là gì?",
+                options: [
+                    "a. Là thiết bị chuyển mạch dùng để kết nối các thiết bị hay các mạng nhỏ lại với nhau.",
+                    "b. Là thiết bị hoạt động ở lớp 3 của mô hình OSI, có nhiệm vụ kết nối hai hay nhiều mạng IP lại với nhau.",
+                    "c. Là thiết bị dùng để kết nối các mạng có giao thức khác nhau.",
+                    "d. Các phương án đã trả lời đều sai."
+                ],
+                correctAnswer: 2
+            },
+            {
+                question: "Câu 66. Thiết bị mạng Access Point là gì?",
+                options: [
+                    "a. Là các thiết bị dùng để thu phát wifi, tạo ra mạng không dây, hoặc WLAN.",
+                    "b. Là thiết bị dùng để kết nối các mạng có giao thức khác nhau.",
+                    "c. Gateway là thiết bị dùng để kết nối các mạng có giao thức khác nhau.",
+                    "d. Các phương án đã trả lời đều sai."
+                ],
+                correctAnswer: 0
+            },
+            {
+                question: "Câu 67. Dịch vụ mạng là gì?",
+                options: [
+                    "a. Là các thiết bị dùng để nối kết mạng.",
+                    "b. Là các chương trình trên máy tính có nối kết mạng.",
+                    "c. Là các ứng dụng ở lớp ứng dụng mạng giúp kết nối người dùng nhằm chia sẽ tài mguyên mạng.",
+                    "d. Các phương án đã trả lời đều sai."
+                ],
+                correctAnswer: 2
+            },
+            {
+                question: "Câu 68. Quản lý tiến trình là gì?",
+                options: [
+                    "a. Là kỹ thuật và chiến lược được các tổ chức sử dụng để thiết kế, giám sát và kiểm soát các người dùng trong một hệ thống công nghệ thông tin.",
+                    "b. Là quản trị hệ thống mạng máy tính.",
+                    "c. Là quản lý một chương trình đang chạy.",
+                    "d. Các phương án đã trả lời đều sai."
+                ],
+                correctAnswer: 0
+            },
+            {
+                question: "Câu 69. Nội dung giám sát và kiểm soát một tiến trình bao gồm?",
+                options: [
+                    "a. Thời gian kết nối giao dịch (truy cập: login time)",
+                    "b. Thời gian kết kết thúc giao dịch (đăng xuất: logout time)",
+                    "c. Số lần giao dịch (đăng nhập).",
+                    "d. Các phương án đã trả lời đều đúng."
+                ],
+                correctAnswer: 3
+            },
+            {
+                question: "Câu 70. Mục đích của quản lý tiến trình là gì?",
+                options: [
+                    "a. Giúp cải thiện hiệu quả hoạt động của hệ thống.",
+                    "b. Giảm chi phí và thực hiện các thay đổi để tối ưu hóa tiến trình.",
+                    "c. Tăng sự an toàn của hệ thống và duy trì sự tuân thủ các yêu cầu quy định",
+                    "d. Các phương án đã trả lời đều đúng."
+                ],
+                correctAnswer: 3
+            },
+            {
+                question: "Câu 71. Một hệ thống thông tin thường có các hoạt động gì?",
+                options: [
+                    "a. Gửi một tiến trình.",
+                    "b. Đình chỉ một tiến trình.",
+                    "c. Chấm dứt một tiến trình.",
+                    "d. Các phương án đã trả lời đều đúng."
+                ],
+                correctAnswer: 3
+            },
+            {
+                question: "Câu 72. Quản trị viên của một hệ thống công nghệ thông tin có quyền gì?",
+                options: [
+                    "a. Quyền thay đổi cài đặt bảo mật trên hệ thống.",
+                    "b. Quyền chia sẽ dữ liệu với đối tác kinh doanh.",
+                    "c. Quyền quyết định sự tồn tại của hệ thống.",
+                    "d. Các phương án đã trả lời đều sai."
+                ],
+                correctAnswer: 3
+            },
+            {
+                question: "Câu 73. Mô hình mạng máy tính nối kết nối dưới dạng nào sẽ bảo mật tốt hơn?",
+                options: [
+                    "a. Mô hình Workgroup.",
+                    "b. Mô hình Homegroup.",
+                    "c. Mô hình Domain.",
+                    "d. Các phương án đã trả lời đều đúng."
+                ],
+                correctAnswer: 2
+            },
+            {
+                question: "Câu 74. Để cài đặt Domain trong HĐH Windows Server, ta phải phải cài đặt thành phần nào của Windows Server?",
+                options: [
+                    "a. ADDS (Active Directory Domain Services).",
+                    "b. DHCP (Dynamic Host Configuration Protocol).",
+                    "c. Remote Desktop",
+                    "d. Các phương án đã trả lời đều sai."
+                ],
+                correctAnswer: 0
+            },
+            {
+                question: "Câu 75. Để máy chủ cấp phát địa chỉ IP động thì trên HĐH Windows Server cần cài đặt và cấu hình thành phần nào?",
+                options: [
+                    "a. ADDS (Active Directory Domain Services).",
+                    "b. DHCP (Dynamic Host Configuration Protocol).",
+                    "c. Remote Desktop.",
+                    "d. Các phương án đã trả lời đều sai."
+                ],
+                correctAnswer: 1
+            },
+            {
+                question: "Câu 76. Giải pháp cho phép người dùng truy cập các ứng dụng web chỉ cần một lần đăng nhập cho dù người dùng và ứng dụng nằm trong các mạng hoặc tổ chức hoàn toàn khác nhau, trên HĐH Windows Server ta cần cài đặt và cấu hình thành phần nào?",
+                options: [
+                    "a. ADFS (Active Directory Federation Services).",
+                    "b. DHCP (Dynamic Host Configuration Protocol).",
+                    "c. ADDS (Active Directory Domain Services).",
+                    "d. Các phương án đã trả lời đều sai."
+                ],
+                correctAnswer: 0
+            },
+            {
+                question: "Câu 77. Trên Windows Server, AppLocker có tính năng gì?",
+                options: [
+                    "a. Khóa tài khoản của người dùng.",
+                    "b. Hạn chế người dùng dùng ứng dụng trên máy chủ.",
+                    "c. Cài đặt bảo mật kiểm soát những ứng dụng nào người dùng được phép chạy.",
+                    "d. Các phương án đã trả lời đều sai."
+                ],
+                correctAnswer: 2
+            },
+            {
+                question: "Câu 78. Trên Windows Server, Group Policy Object có tính năng gì?",
+                options: [
+                    "a. Cài đặt và cấu hình chính sách nhóm đối tượng.",
+                    "b. Cài đặt và cấu hình chính sách nhóm từng đối tượng.",
+                    "c. Cài đặt và cấu hình chính sách cho hệ thống.",
+                    "d. Các phương án đã trả lời đều đúng."
+                ],
+                correctAnswer: 0
+            },
+            {
+                question: "Câu 79. Việc theo dõi và ghi nhật ký hệ thống có ý nghĩa gì?",
+                options: [
+                    "a. Theo dõi hiệu suất và hoạt động của hệ thống.",
+                    "b. Đưa ra các dấu hiệu cảnh báo về việc phát sinh sự cố.",
+                    "c. Có cơ hội giải quyết sự cố trước khi chúng gây gián đoạn các tiến trình và dịch vụ.",
+                    "d. Các phương án đã trả lời đều đúng."
+                ],
+                correctAnswer: 3
+            },
+            {
+                question: "Câu 80. Các chức năng theo dõi, giám sát và ghi nhật ký hệ thống bao gồm:",
+                options: [
+                    "a. Định cấu hình bộ thu thập dữ liệu.",
+                    "b. Quản lý cảnh báo.",
+                    "c. Giám sát các sự kiện và giám sát mạng.",
+                    "d. Các phương án đã trả lời đều đúng."
+                ],
+                correctAnswer: 3
+            },
+            {
+                question: "Câu 81. Điểm khôi phục trên một hệ thống là gì?",
+                options: [
+                    "a. Là thời gian được lưu trữ trên hệ thống.",
+                    "b. Là quá trình khôi phục của hệ thống.",
+                    "c. Là một tập hợp các tập tin hệ thống quan trọng được lưu trữ với ngày và giờ cụ thể.",
+                    "d. Các phương án đã trả lời đều sai."
+                ],
+                correctAnswer: 2
+            },
+            {
+                question: "Câu 82. Tự động hoá các thao tác quản trị hệ thống có ý nghĩa gì?",
+                options: [
+                    "a. Thay thế những thao tác thủ công bằng chương trình.",
+                    "b. Giảm tải các nhiệm vụ lặp đi lặp lại và tốn ít thời gian.",
+                    "c. Giúp cho chuyên viên quản trị hệ thống lập kế hoạch chủ động.",
+                    "d. Các phương án đã trả lời đều đúng."
+                ],
+                correctAnswer: 3
+            },
+            {
+                question: "Câu 83. Thao tác nào dưới đây có thể tự động hóa trên hệ thống?",
+                options: [
+                    "a. Đặt lại mật khẩu (Password resets).",
+                    "b. Vá lỗi (Patching).",
+                    "c. Quét đĩa đang dùng (Disk usage scans).",
+                    "d. Các phương án đã trả lời đều đúng."
+                ],
+                correctAnswer: 3
+            },
+            {
+                question: "Câu 84. Công nghệ ảo hoá (Virtualization technology) là gì?",
+                options: [
+                    "a. Là sử dụng phần mềm mô phỏng chức năng phần cứng để tạo ra một hệ thống ảo hóa.",
+                    "b. Công nghệ không có thực.",
+                    "c. Công nghệ phần mềm điều khiển phần cứng.",
+                    "d. Các phương án đã trả lời đều sai."
+                ],
+                correctAnswer: 0
+            }
+        ];
+
+       const container = document.getElementById('quiz-container');
+
+        // Hàm render câu hỏi
+        function renderQuiz() {
+            quizData.forEach((item, index) => {
+                if (item.chapter) {
+                    const chapterEl = document.createElement('div');
+                    chapterEl.className = 'chapter-title';
+                    chapterEl.innerText = item.chapter;
+                    container.appendChild(chapterEl);
+                }
+
+                const card = document.createElement('div');
+                card.className = 'question-card';
+
+                const questionTitle = document.createElement('div');
+                questionTitle.className = 'question-title';
+                questionTitle.innerText = item.question;
+                card.appendChild(questionTitle);
+
+                const optionsList = document.createElement('ul');
+                optionsList.className = 'options';
+                optionsList.id = 'options_' + index;
+
+                item.options.forEach((opt, optIndex) => {
+                    const li = document.createElement('li');
+                    
+                    const label = document.createElement('label');
+                    label.id = `label_${index}_${optIndex}`;
+                    
+                    const radio = document.createElement('input');
+                    radio.type = 'radio';
+                    radio.name = 'question_' + index;
+                    radio.value = optIndex;
+                    
+                    // Lắng nghe sự kiện click chọn đáp án
+                    radio.onchange = () => checkAnswer(index, optIndex);
+
+                    label.appendChild(radio);
+                    label.appendChild(document.createTextNode(opt));
+                    li.appendChild(label);
+                    optionsList.appendChild(li);
+                });
+
+                card.appendChild(optionsList);
+
+                // Khu vực hiển thị thông báo Đúng/Sai
+                const feedbackDiv = document.createElement('div');
+                feedbackDiv.id = 'feedback_' + index;
+                feedbackDiv.className = 'feedback';
+                card.appendChild(feedbackDiv);
+
+                container.appendChild(card);
+            });
+        }
+
+        // Hàm kiểm tra đáp án ngay lập tức
+        function checkAnswer(questionIndex, selectedOptionIndex) {
+            const item = quizData[questionIndex];
+            const optionsList = document.getElementById('options_' + questionIndex);
+            const radios = optionsList.getElementsByTagName('input');
+            const feedback = document.getElementById('feedback_' + questionIndex);
+
+            // Vô hiệu hóa tất cả radio của câu này để người dùng không đổi lại được
+            for (let r of radios) {
+                r.disabled = true;
+            }
+
+            // Gỡ bỏ tất cả màu sắc cũ nếu có
+            for (let i = 0; i < item.options.length; i++) {
+                document.getElementById(`label_${questionIndex}_${i}`).classList.remove('correct', 'incorrect');
+            }
+
+            const selectedLabel = document.getElementById(`label_${questionIndex}_${selectedOptionIndex}`);
+            const correctLabel = document.getElementById(`label_${questionIndex}_${item.correctAnswer}`);
+
+            if (selectedOptionIndex === item.correctAnswer) {
+                selectedLabel.classList.add('correct');
+                feedback.innerHTML = '<span style="color: #27ae60;">✔ BẠN ĐÃ TRẢ LỜI ĐÚNG!</span>';
+            } else {
+                selectedLabel.classList.add('incorrect');
+                correctLabel.classList.add('correct'); // Highlight luôn đáp án đúng để người dùng biết
+                feedback.innerHTML = '<span style="color: #e74c3c;">✘ SAI RỒI! (Đáp án nền xanh mới là đúng)</span>';
+            }
+            
+            feedback.classList.add('show');
+        }
+
+        // Khởi chạy
+        renderQuiz();
+    </script>
+</body>
+</html>
