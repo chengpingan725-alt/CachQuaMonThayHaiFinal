@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="vi">
 <head>
@@ -939,12 +940,6 @@
         // Hàm render câu hỏi
         function renderQuiz() {
             quizData.forEach((item, index) => {
-                if (item.chapter) {
-                    const chapterEl = document.createElement('div');
-                    chapterEl.className = 'chapter-title';
-                    chapterEl.innerText = item.chapter;
-                    container.appendChild(chapterEl);
-                }
 
                 const card = document.createElement('div');
                 card.className = 'question-card';
@@ -1021,6 +1016,24 @@
             
             feedback.classList.add('show');
         }
+
+        // Đảo ngẫu nhiên vị trí câu hỏi và bỏ phân chương
+        
+quizData.sort(() => Math.random() - 0.5);
+
+// Đảo vị trí đáp án của từng câu hỏi
+quizData.forEach(q => {
+    const combined = q.options.map((opt, idx) => ({
+        text: opt,
+        isCorrect: idx === q.correctAnswer
+    }));
+
+    combined.sort(() => Math.random() - 0.5);
+
+    q.options = combined.map(x => x.text);
+    q.correctAnswer = combined.findIndex(x => x.isCorrect);
+});
+
 
         // Khởi chạy
         renderQuiz();
